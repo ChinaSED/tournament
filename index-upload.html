@@ -10,6 +10,17 @@
 <link rel="stylesheet" type="text/css" href="styles/style.css">
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="fonts/css/fontawesome-all.min.css">    
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+crossorigin=""/>
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+
+   
+
 <link rel="manifest" href="_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
 <link rel="apple-touch-icon" sizes="180x180" href="app/icons/icon-192x192.png">
 </head>
@@ -91,36 +102,24 @@
             </div>
         </div>
 
-        <div class="card card-style p-3">
-            <div class="row text-center row-cols-3 mb-n4">
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/30t.jpg" title="Vynil and Typerwritter">
-                    <img data-src="images/pictures/30s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/22t.jpg" title="Cream Cookie">
-                    <img data-src="images/pictures/22s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/23t.jpg" title="Cookies and Flowers">
-                    <img data-src="images/pictures/23s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/24t.jpg" title="Pots and Pans">
-                    <img data-src="images/pictures/24s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/25t.jpg" title="Berries are Packed with Fiber">
-                    <img data-src="images/pictures/25s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/26t.jpg" title="A beautiful Retro Camera">
-                    <img data-src="images/pictures/26s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/27t.jpg" title="Pots and Pans">
-                    <img data-src="images/pictures/27s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/28t.jpg" title="Berries are Packed with Fiber">
-                    <img data-src="images/pictures/28s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-                <a class="col mb-4" data-lightbox="gallery-1" href="images/pictures/31t.jpg" title="A beautiful Retro Camera">
-                    <img data-src="images/pictures/31s.jpg" class="img-fluid rounded-xs preload-img" alt="img">
-                </a>
-            </div>
+        <div class="card card-style">
+
+            <div id="map" style="width: 600px; height: 400px;"></div>
+            <script>
+            
+                var map = L.map('map').setView([31.976492,118.824829 ], 13);
+            
+                var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+                        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    id: 'mapbox/streets-v11',
+                    tileSize: 512,
+                    zoomOffset: -1
+                }).addTo(map);
+            
+            </script>
+            
         </div>
 
        
