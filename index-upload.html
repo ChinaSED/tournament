@@ -75,35 +75,6 @@
             <div class="card-overlay bg-gradient-fade"></div>
         </div>
 
-        <div class="card card-style">
-            <div class="content mb-4">
-                <div class="row mb-0 text-center">
-                    <div class="col-4">
-                        <h1 class="mb-n1">351</h1>
-                        <p class="font-10 mb-0 pb-0">点赞</p>
-                    </div>
-                    <div class="col-4">
-                        <h1 class="mb-n1">193</h1>
-                        <p class="font-10 mb-0 pb-0">收藏</p>
-                    </div>
-                    <div class="col-4">
-                        <h1 class="mb-n1">615</h1>
-                        <p class="font-10 mb-0 pb-0">发布</p>
-                    </div>
-                </div>
-
-                <!-- <div class="divider mb-4 mt-3"></div>
-
-                <div class="row mb-0 pb-4">
-                    <div class="col-6">
-                        <a href="#" class="btn btn-m btn-full rounded-s bg-highlight text-uppercase font-900">Follow</a>
-                    </div>
-                    <div class="col-6">
-                        <a href="#" class="btn btn-m btn-border btn-full rounded-s border-highlight color-highlight text-uppercase font-900">Message</a>
-                    </div>
-                </div> -->
-            </div>
-        </div>
 
         <div class="card card-style">
 
@@ -144,11 +115,95 @@
                 }).addTo(map);
 
                 L.control.locate().addTo(map);
+
+                map.locate({setView: true, maxZoom: 16});
+
+
+                function onLocationFound(e) {
+                    var radius = e.accuracy;
+
+                    L.marker(e.latlng).addTo(map)
+                        .bindPopup(radius + " 米内").openPopup();
+
+                    L.circle(e.latlng, radius).addTo(map);
+
+                    document.getElementById("pos").value=e.latlng.toString().slice(7,-1);   
+                }
+                
+                
+                map.on('locationfound', onLocationFound);
+                
+
+                var popup = L.popup();
+
+                function onMapClick(e) {
+                    popup
+                        .setLatLng(e.latlng)
+                        .setContent(e.latlng.toString().slice(7,-1))
+                        .openOn(map);
+                    document.getElementById("pos").value=e.latlng.toString().slice(7,-1);   
+                }
+
+                map.on('click', onMapClick);
             </script>
             
         </div>
-                <div class="card card-style">
-            <div class="content">
+
+        <div class="card card-style">
+            <div class="mt-2 ml-1 mr-1 col-12">
+                <div class="input-style input-style-2 has-icon input-required">
+                    <i class="input-icon fa fa-map-marker"></i>
+                    <span class="color-highlight">坐标</span>
+                    <em>(required)</em>
+                    <input class="form-control" type="text" placeholder="" id="pos">
+                </div>  
+            </div>
+
+
+            <div>
+                <div class="row mb-0 ml-1 mr-1">
+                    <div class="col-6">
+                        <div class="input-style input-style-2 input-required has-icon">
+                            <i class="input-icon fa fa-book"></i>
+                            <span class="color-highlight">方案名</span>
+                            <input class="form-control" type="text" placeholder="" id="pos">
+                        </div>  
+                    </div>
+                    <div class="col-6">
+                        <div class="input-style input-style-2 input-required">
+                            <span>类型</span>
+                            <em><i class="fa fa-angle-down"></i></em>
+                            <select class="form-control">
+                                <option value="default" disabled selected>请选择</option>
+                                <option value="GUIDE">游览指南</option>
+                                <option value="PLAN">计划方案</option>
+                                <option value="GAME">游戏互动</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="row mb-0 ml-3 mr-3">
+                <div class="col-12 input-style input-style-1 input-required">
+                <span>输入方案</span>
+                <textarea placeholder="输入方案"></textarea>
+                </div>
+            </div>
+            <div class="row mb-0 ml-3 mr-3 text-center">
+
+                <div class="col-6 pl-1 pr-1">
+                    <a href="#" class="bbtn btn-m btn-full mb-3 rounded-xl text-uppercase font-900 shadow-s border-green1-dark bg-green1-light">发布</a>
+                </div>
+                <div class="col-6 pl-1">
+                    <a href="#" class="btn btn-m btn-full mb-3 rounded-xl text-uppercase font-900 shadow-s border-yellow2-dark bg-yellow2-light">存为草稿</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-style">
+                <div class="content">
                 <h3 class="font-700">Get Coordinates</h3>
                 <p class="mb-0 pb-4">You can request your device coordinates, these can then be placed on a map.</p>
                 <p class="location-support mt-n3"></p>            
