@@ -11,15 +11,16 @@
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="fonts/css/fontawesome-all.min.css">    
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-crossorigin=""/>
- <!-- Make sure you put this AFTER Leaflet's CSS -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   crossorigin=""></script>
 
-   
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.bootcss.com/proj4js/2.4.3/proj4.js"></script>
+<script src="https://cdn.bootcss.com/proj4leaflet/1.0.1/proj4leaflet.min.js"></script>
+<script type="text/javascript" src='../scripts/leaflet.ChineseTmsProviders.js'></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.0/dist/L.Control.Locate.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.0/dist/L.Control.Locate.min.js" charset="utf-8"></script>   
+
 
 <link rel="manifest" href="_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
 <link rel="apple-touch-icon" sizes="180x180" href="app/icons/icon-192x192.png">
@@ -104,24 +105,60 @@ crossorigin=""/>
 
         <div class="card card-style">
 
-            <div id="map" style="width: 600px; height: 400px;"></div>
+            <div  class="mx-auto" id="map" style="width: 600px; height: 400px"></div>
             <script>
-            
-                var map = L.map('map').setView([31.976492,118.824829 ], 13);
-            
-                var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                var normalm = L.tileLayer.chinaProvider('GaoDe.Normal.Map', {
                     maxZoom: 18,
-                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-                        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                    id: 'mapbox/streets-v11',
-                    tileSize: 512,
-                    zoomOffset: -1
+                    minZoom: 5
+                });
+                var imgm = L.tileLayer.chinaProvider('GaoDe.Satellite.Map', {
+                    maxZoom: 18,
+                    minZoom: 5
+                });
+                var imga = L.tileLayer.chinaProvider('GaoDe.Satellite.Annotion', {
+                    maxZoom: 18,
+                    minZoom: 5
+                });
+
+                var normal = L.layerGroup([normalm]),
+                    image = L.layerGroup([imgm, imga]);
+
+                var baseLayers = {
+                    "地图": normal,
+                    "影像": image,
+                }
+
+                var map = L.map("map", {
+                    center: [31.59, 120.29],
+                    zoom: 12,
+                    layers: [normal],
+                    zoomControl: false
+                });
+
+                L.control.layers(baseLayers, null).addTo(map);
+                L.control.zoom({
+                    zoomInTitle: '放大',
+                    zoomOutTitle: '缩小'
                 }).addTo(map);
-            
+
+                L.control.locate().addTo(map);
+                L.control.locate(OPTIONS).addTo(map);
             </script>
             
         </div>
-
+                <div class="card card-style">
+            <div class="content">
+                <h3 class="font-700">Get Coordinates</h3>
+                <p class="mb-0 pb-4">You can request your device coordinates, these can then be placed on a map.</p>
+                <p class="location-support mt-n3"></p>            
+                <a href="#" class="get-location btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase shadow-l font-900">Get my Location</a>
+                <p class="location-coordinates"></p>
+                <h3 class="pt-2">Show Location on Map</h3>
+                <p>
+                    Tap the "Get My Location" button above and this map will automatically update with your new location. It's that simple.
+                </p>
+            </div>
+        </div>
        
         <!-- footer and footer card-->
     </div>    
